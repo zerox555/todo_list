@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function TodoLandingPage() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    // Load from localStorage on mount
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
+
   const [formData, setFormData] = useState({
     activity: "",
     price: "",
@@ -9,6 +14,11 @@ export default function TodoLandingPage() {
     bookingRequired: false,
     accessibility: 0.5,
   });
+
+  useEffect(() => {
+    // Save todos to localStorage whenever they change
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
