@@ -7,7 +7,17 @@ const TodoTypes = ["education", "recreational", "social", "diy", "charity", "coo
    only rerender if props change */
 const TodoForm = memo(({ formData, handleChange, handleSubmit }) => {
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+    <form onSubmit={handleSubmit} style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      padding: "10px",
+      border: "1px solid #ccc",
+      borderRadius: "5px",
+      width: "100%",
+      maxWidth: "1000px",
+      margin: "auto"
+    }}>
       <input
         type="text"
         name="activity"
@@ -16,7 +26,7 @@ const TodoForm = memo(({ formData, handleChange, handleSubmit }) => {
         onChange={handleChange}
         required
       />
-      
+
       <input
         type="number"
         name="price"
@@ -25,7 +35,7 @@ const TodoForm = memo(({ formData, handleChange, handleSubmit }) => {
         onChange={handleChange}
         required
       />
-      
+
       <select
         name="type"
         value={formData.type}
@@ -35,7 +45,7 @@ const TodoForm = memo(({ formData, handleChange, handleSubmit }) => {
           <option key={option} value={option}>{option}</option>
         ))}
       </select>
-      
+
       <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
         <input
           type="checkbox"
@@ -45,7 +55,7 @@ const TodoForm = memo(({ formData, handleChange, handleSubmit }) => {
         />
         Booking Required
       </label>
-      
+
       <label style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         Accessibility: {formData.accessibility}
         <input
@@ -58,7 +68,7 @@ const TodoForm = memo(({ formData, handleChange, handleSubmit }) => {
           onChange={handleChange}
         />
       </label>
-      
+
       <button type="submit">Add To-Do</button>
     </form>
   );
@@ -68,18 +78,30 @@ const TodoForm = memo(({ formData, handleChange, handleSubmit }) => {
  only rerender if props change */
 const TodoList = memo(({ todos, handleDelete }) => {
   return (
-    <ul style={{ paddingTop: "10px" }}>
+    <ul style={{ paddingTop: "10px", listStyle: "none" }}>
       {todos.map((todo, index) => (
-        <li key={index} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <span>
-            <strong>{todo.activity}</strong> - ${todo.price} - {todo.type} - {todo.bookingRequired ? "Booking Required" : "No Booking"} - Accessibility: {todo.accessibility}
-          </span>
+        <li key={index} style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "5px",
+          padding: "10px",
+          border: "1px solid #ccc",
+          borderRadius: "5px",
+          marginBottom: "10px",
+          width:"200px"
+        }}>
+          <span><strong>Activity:</strong> {todo.activity}</span>
+          <span><strong>Price:</strong> ${todo.price}</span>
+          <span><strong>Type:</strong> {todo.type}</span>
+          <span><strong>Booking Required:</strong> {todo.bookingRequired ? "Yes" : "No"}</span>
+          <span><strong>Accessibility:</strong> {todo.accessibility}</span>
           <button onClick={() => handleDelete(index)}>Delete</button>
         </li>
       ))}
     </ul>
   );
 });
+
 
 export default function TodoLandingPage() {
   // stores todo items in localStorage for storage
@@ -127,7 +149,9 @@ export default function TodoLandingPage() {
     <div style={{ padding: "20px" }}>
       <h1>To-Do List</h1>
       <p><strong>Total Items: {totalItems}</strong></p>
+      
       <TodoForm formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />
+ 
       <TodoList todos={todos} handleDelete={handleDelete} />
     </div>
   );
